@@ -40,24 +40,24 @@ public class ServerCommunication {
     private String userid;
     private HttpClient httpclient;
 
-    public ServerCommunication(Context context,String userid){
+    public ServerCommunication(Context context, String userid) {
         this.userid = userid;
         this.getConnection();
         this.mContext = context;
     }
 
-    protected void getConnection (){
+    protected void getConnection() {
         this.httpclient = new DefaultHttpClient();
     }
 
-    public String sendLocationData(){
+    public String sendLocationData() {
         InputStream inputStream = null;
         String result = "";
 
         try {
             HttpPost httpPost = new HttpPost("http://followyou.eu/webservice/saver.php");
             List<SendDataObject> sendDataArray = new ArrayList<SendDataObject>();
-            SendDataObject sendData = new SendDataObject(0,12,"2017.03.21 23:57:20",this.userid,0);
+            SendDataObject sendData = new SendDataObject(0, 12, "2017.03.21 23:57:20", this.userid, 0);
             sendDataArray.add(sendData);
             String json = this.gson.toJson(sendDataArray);
             StringEntity se = new StringEntity(json);
@@ -86,13 +86,13 @@ public class ServerCommunication {
         return result;
     }
 
-    public String getConfigData (){
+    public String getConfigData() {
         InputStream inputStream = null;
         String result = "";
         try {
             HttpPost httpPost = new HttpPost("http://followyou.eu/webservice/check.php");
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-            nameValuePairs.add(new BasicNameValuePair("userid",this.userid));
+            nameValuePairs.add(new BasicNameValuePair("userid", this.userid));
             httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
             HttpResponse httpResponse = this.httpclient.execute(httpPost);
             inputStream = httpResponse.getEntity().getContent();
@@ -118,22 +118,23 @@ public class ServerCommunication {
         return result;
     }
 
-    public boolean isConnected(){
+    public boolean isConnected() {
         ConnectivityManager connMgr = (ConnectivityManager) this.mContext.getSystemService(Activity.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected())
+        if (networkInfo != null && networkInfo.isConnected()) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 
     private static String convertInputStreamToString(InputStream inputStream) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         String line = "";
         String result = "";
-        while((line = bufferedReader.readLine()) != null)
+        while ((line = bufferedReader.readLine()) != null) {
             result += line;
-
+        }
         inputStream.close();
         return result;
 
