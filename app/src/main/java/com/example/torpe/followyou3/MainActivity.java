@@ -17,15 +17,19 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
-    final Config config = new Config();
-    final String userId = config.getUserId();
-    protected ServerCommunication serverCommunication = new ServerCommunication(MainActivity.this, this.userId);
+    private static Config config;
+    private static String userId;
+    protected ServerCommunication serverCommunication;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.checkPremmisions();
+        this.config = new Config(MainActivity.this);
+        this.userId = config.getUserId();
+        this.serverCommunication = new ServerCommunication(MainActivity.this, this.userId);
         TrackGPS gps = new TrackGPS(MainActivity.this);
         Log.d("Longitude", new Double(gps.getLongitude()).toString());
         Log.d("Latitude", new Double(gps.getLatitude()).toString());
@@ -36,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
                 TrackGPS gps = new TrackGPS(MainActivity.this);
                 Log.d("Longitude", new Double(gps.getLongitude()).toString());
                 Log.d("Latitude", new Double(gps.getLatitude()).toString());
+                config.setNewConfig();
                 if(serverCommunication.isConnected()){
                     Log.d("isConnected", "Igen");
                 }
