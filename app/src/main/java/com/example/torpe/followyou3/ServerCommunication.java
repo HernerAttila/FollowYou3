@@ -92,7 +92,7 @@ public class ServerCommunication {
         try {
             HttpPost httpPost = new HttpPost("http://followyou.eu/webservice/check.php");
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-            nameValuePairs.add(new BasicNameValuePair("userid", this.userid));
+            nameValuePairs.add(new BasicNameValuePair("userId", this.userid));
             httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
             HttpResponse httpResponse = this.httpclient.execute(httpPost);
             inputStream = httpResponse.getEntity().getContent();
